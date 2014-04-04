@@ -182,10 +182,17 @@ public class Assinador {
 
         // Create a DOMSignContext and specify the RSA PrivateKey and
         // location of the resulting XMLSignature's parent element.
-        el = (Element) doc.getDocumentElement().getElementsByTagName(tag).item(0);
-        el.setIdAttribute("Id", true);
-        DOMSignContext dsc = new DOMSignContext(keyEntry.getPrivateKey(), el);
-
+        DOMSignContext dsc = new DOMSignContext(keyEntry.getPrivateKey(), doc.getDocumentElement());
+        
+        //INICIO 
+        //tentando enviar NFe em qualquer Java, mas o código abaixo 
+        //coloca a assinatura no lugar errado do XML, antes de fechar a tag </infNFe>
+        //tem que ser depois
+//        el = (Element) doc.getDocumentElement().getElementsByTagName(tag).item(0);
+//        el.setIdAttribute("Id", true);
+//        DOMSignContext dsc = new DOMSignContext(keyEntry.getPrivateKey(), el);
+        //FIM
+        
         // Create the XMLSignature, but don't sign it yet.
         XMLSignature signature = fac.newXMLSignature(si, ki);
 
