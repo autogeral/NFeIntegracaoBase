@@ -112,9 +112,14 @@ public class WsConnectionConfig {
                 hosts = new String[] {"nfe.fazenda.sp.gov.br"};
                 InstallCert.installHostCertificate(false, file, hosts);
                 hosts = new String[] {"nfce.fazenda.sp.gov.br"};
-                InstallCert.installHostCertificate(false, file, hosts);                
+                InstallCert.installHostCertificate(false, file, hosts);       
+                hosts = new String[]{"wssatsp.fazenda.sp.gov.br"};
+                InstallCert.installHostCertificate(false, file, hosts);       
+                hosts = new String[]{"wssatsp.fazenda.sp.gov.br"};
 //                hosts = new String[] {"homologacao.nfce.fazenda.sp.gov.br"};
 //                InstallCert.installHostCertificate(false, file, hosts);                
+                InstallCert.installHostCertificate(false, file, hosts);
+
             } catch (Exception ex) {
                 Logger.getLogger(WsConnectionConfig.class.getName()).log(Level.SEVERE, null, ex);
             }
