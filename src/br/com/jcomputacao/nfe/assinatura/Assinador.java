@@ -49,6 +49,7 @@ import java.security.Security;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import javax.xml.crypto.dsig.CanonicalizationMethod;
 import javax.xml.crypto.dsig.DigestMethod;
@@ -89,8 +90,18 @@ public class Assinador {
     private static final String C14N_TRANSFORM_METHOD = "http://www.w3.org/TR/2001/REC-xml-c14n-20010315";
     private static final String PROVIDER_CLASS_NAME = "org.jcp.xml.dsig.internal.dom.XMLDSigRI";
     private static final String PROVIDER_NAME = "jsr105Provider";
+    private Date notBefore;
+    private Date notAfter;
 
-    public static String assinar(String xml, String caminhoCertificado, String senha, AssinadorTipo tipo, String cnpj) throws Exception {
+    public Date getNotBefore() {
+        return notBefore;
+    }
+
+    public Date getNotAfter() {
+        return notAfter;
+    }
+
+    public String assinar(String xml, String caminhoCertificado, String senha, AssinadorTipo tipo, String cnpj) throws Exception {
         String tag = "";
         if (AssinadorTipo.INFORMACAO.equals(tipo)) {
             tag = "infNFe";
@@ -163,6 +174,9 @@ public class Assinador {
 
         KeyStore.PrivateKeyEntry keyEntry = (KeyStore.PrivateKeyEntry) ks.getEntry(alias, new KeyStore.PasswordProtection(senha.toCharArray()));
         X509Certificate cert = (X509Certificate) keyEntry.getCertificate();
+        notBefore = cert.getNotBefore();
+        notAfter = cert.getNotAfter();
+        
         // Create the KeyInfo containing the X509Data.
         KeyInfoFactory kif = fac.getKeyInfoFactory();
         List x509Content = new ArrayList();
