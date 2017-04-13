@@ -153,6 +153,7 @@ public class WsConnectionConfig {
         KeyStore ks;
         try {
             String tokenCfg = System.getProperty("nfe.certificado.token.cfg", "C:\\DBF\\dist\\token.cfg");
+            verificaSeArquivoExiste(tokenCfg);
             String className = "sun.security.pkcs11.SunPKCS11";
             Class<?> providerClass = Class.forName(className);
             if (providerClass == null) {
@@ -307,6 +308,10 @@ public class WsConnectionConfig {
 
         Protocol protocol = new Protocol("https", socketFactoryDinamico, 443);
         Protocol.registerProtocol("https", protocol);
+    }
+
+    private static void verificaSeArquivoExiste(String tokenCfg) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
 
