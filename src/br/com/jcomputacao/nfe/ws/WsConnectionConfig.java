@@ -35,6 +35,7 @@
  */
 package br.com.jcomputacao.nfe.ws;
 
+import br.com.jcomputacao.nfe.CertificadoA3FileFilter;
 import br.com.jcomputacao.nfe.NFeUtil;
 import java.io.File;
 import java.io.FileInputStream;
@@ -153,7 +154,7 @@ public class WsConnectionConfig {
         KeyStore ks;
         try {
             String tokenCfg = System.getProperty("nfe.certificado.token.cfg", "C:\\DBF\\dist\\token.cfg");
-            verificaSeArquivoExiste(tokenCfg);
+            verificaSeArquivoCfgExiste(tokenCfg);
             String className = "sun.security.pkcs11.SunPKCS11";
             Class<?> providerClass = Class.forName(className);
             if (providerClass == null) {
@@ -310,8 +311,39 @@ public class WsConnectionConfig {
         Protocol.registerProtocol("https", protocol);
     }
 
-    private static void verificaSeArquivoExiste(String tokenCfg) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private static void verificaSeArquivoCfgExiste(String tokenCfg) {
+        File f = new File(tokenCfg);
+        if (!f.exists()) {
+            File diretorioDlls = new File("C:\\Windows\\System32");
+            if (diretorioDlls.listFiles() != null) {
+                CertificadoA3FileFilter cff = new CertificadoA3FileFilter();
+                File[] arquivos = diretorioDlls.listFiles(cff);
+                boolean achouDll = false;
+                for (File arquivo : arquivos) {
+                    if (arquivo.isFile()) {
+                        String nameDll = arquivo.getName();
+                        String tipoCertificado = "SmartCard";
+                        System.out.println(nameDll);
+                        if (!cff.validaDll(nameDll, tipoCertificado)) {
+                            tipoCertificado = "eToken";
+                            if (cff.validaDll(nameDll, tipoCertificado)) {
+                                achouDll = true;
+                            }
+                        } else {
+                            achouDll = true;
+                        }
+                    }
+                    if (achouDll) {
+                        break;
+                    }
+                }
+                if (!achouDll) {
+                    if(f.exists()) {
+                        f.delete();
+                    }
+                }
+            }
+        }
     }
 }
 
