@@ -47,7 +47,7 @@ public class SocketFactoryDinamico implements ProtocolSocketFactory {
         try {
             KeyManager[] keyManagers = createKeyManagers();
             TrustManager[] trustManagers = createTrustManagers();
-            SSLContext sslContext = SSLContext.getInstance("TLS");
+            SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
             sslContext.init(keyManagers, trustManagers, null);
 
             return sslContext;

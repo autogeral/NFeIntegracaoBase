@@ -178,8 +178,8 @@ public class WsConnectionConfig {
             //FONTE: http://www.javac.com.br/jc/posts/list/2516-erro-comunicacao-webservice-certificado-oberthur-technologies.page
             boolean certificadoTipoOberthurTechnologiesComJava8 = Boolean.parseBoolean(System.getProperty("certicado.OberthurTechnologies", "false"));
             if (certificadoTipoOberthurTechnologiesComJava8) {
-                System.setProperty("https.protocols", "SSLv3,TLSv1");
-                System.setProperty("jdk.tls.client.protocols", "TLSv1");
+                System.setProperty("https.protocols", "SSLv3,TLSv1,TLSv1.2");
+                System.setProperty("jdk.tls.client.protocols", "TLSv1.2");
             }
             
             boolean multiplosCertificados = NFeUtil.getCertificadoMultiplo(cnpj);
