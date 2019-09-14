@@ -4,6 +4,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.NumberFormat;
 import java.util.Arrays;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -281,6 +282,7 @@ public class ChaveAcesso {
 		= Arrays.copyOfRange(notaFiscalHash, hashIndex,
 				     hashIndex + PESO_A[i]);
 	    int somaBytes = soma(algarismoBytes);
+            somaBytes = Math.abs(somaBytes);
 	    int algarismo = mod10(somaBytes);
 	    codigoNumerico += (double) algarismo * Math.pow(10.0, (double) i);
 	    hashIndex += PESO_A[i];
