@@ -103,21 +103,28 @@ public class Assinador {
 
     public String assinar(String xml, String caminhoCertificado, String senha, AssinadorTipo tipo, String cnpj) throws Exception {
         String tag = "";
-        if (AssinadorTipo.INFORMACAO.equals(tipo)) {
-            tag = "infNFe";
-        } else if (AssinadorTipo.CANCELAMENTO.equals(tipo)) {
-            tag = "infEvento";
-        } else if (AssinadorTipo.INUTILIZACAO.equals(tipo)) {
-            tag = "infInut";
+        if (null != tipo) switch (tipo) {
+            case INFORMACAO:
+                tag = "infNFe";
+                break;
+            case CANCELAMENTO:
+                tag = "infEvento";
+                break;
+            case INUTILIZACAO:
+                tag = "infInut";
+                break;
+            default:
+                break;
         }
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         DocumentBuilder builder = factory.newDocumentBuilder();
 
-        ByteArrayInputStream bais = new ByteArrayInputStream(xml.getBytes(Charset.forName("UTF-8")));
-        Document docs = builder.parse(bais);
-        bais.close();
+        Document docs;
+        try (ByteArrayInputStream bais = new ByteArrayInputStream(xml.getBytes(Charset.forName("UTF-8")))) {
+            docs = builder.parse(bais);
+        }
         
         NodeList elements = docs.getElementsByTagName(tag);
         if (elements.getLength() == 0) {
