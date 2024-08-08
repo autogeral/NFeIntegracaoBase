@@ -48,7 +48,6 @@ public class NFeUtil {
     private static int ambiente = 1;
     private static int tipoProcessamento = 3;
     private static String versaoProcessamento = null;
-    public static String modelo = "55";
 
     static {
         formatNumber = NumberFormat.getNumberInstance(Locale.US);
@@ -62,7 +61,6 @@ public class NFeUtil {
         ambiente = Integer.parseInt(System.getProperty("nfe.ambiente", "2"));
         tipoProcessamento = Integer.parseInt(System.getProperty("nfe.tipoProcessamento", "0"));
         versaoProcessamento = System.getProperty("nfe.versaoProcessamento", "SP_NFE_PL_006h");
-        modelo = System.getProperty("modelo", modelo);
     }
 
     public static String quatroCasas(double valor){
@@ -93,10 +91,6 @@ public class NFeUtil {
      */
     public static int tipoProcessamento(){
         return tipoProcessamento;
-    }
-
-    public static String getModelo(){
-        return modelo;
     }
 
     public static String getCertificadoSenha(String cnpj) {
