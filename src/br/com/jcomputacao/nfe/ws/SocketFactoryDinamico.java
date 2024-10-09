@@ -33,8 +33,8 @@ import org.apache.commons.httpclient.protocol.ProtocolSocketFactory;
 public class SocketFactoryDinamico implements ProtocolSocketFactory {
 
     private SSLContext ssl = null;
-    private X509Certificate certificate;
-    private PrivateKey privateKey;
+    private final X509Certificate certificate;
+    private final PrivateKey privateKey;
     private String fileCacerts;
 
     public SocketFactoryDinamico(X509Certificate certificate,
@@ -51,15 +51,7 @@ public class SocketFactoryDinamico implements ProtocolSocketFactory {
             sslContext.init(keyManagers, trustManagers, null);
 
             return sslContext;
-        } catch (KeyManagementException e) {
-            error(e.toString());
-        } catch (KeyStoreException e) {
-            error(e.toString());
-        } catch (NoSuchAlgorithmException e) {
-            error(e.toString());
-        } catch (CertificateException e) {
-            error(e.toString());
-        } catch (IOException e) {
+        } catch (KeyManagementException | KeyStoreException | NoSuchAlgorithmException | CertificateException | IOException e) {
             error(e.toString());
         }
         return null;
@@ -72,6 +64,7 @@ public class SocketFactoryDinamico implements ProtocolSocketFactory {
         return ssl;
     }
 
+    @Override
     public Socket createSocket(String host, int port, InetAddress localAddress,
             int localPort, HttpConnectionParams params) throws IOException,
             UnknownHostException, ConnectTimeoutException {
@@ -91,20 +84,22 @@ public class SocketFactoryDinamico implements ProtocolSocketFactory {
         socket.bind(localaddr);
         try {
             socket.connect(remoteaddr, timeout);
-        } catch (Exception e) {
+        } catch (IOException e) {
             error(e.toString());
-            throw new ConnectTimeoutException("Poss�vel timeout de conex�o", e);
+            throw new ConnectTimeoutException("Possível timeout de conexão", e);
         }
 
         return socket;
     }
 
+    @Override
     public Socket createSocket(String host, int port, InetAddress clientHost,
             int clientPort) throws IOException, UnknownHostException {
         return getSSLContext().getSocketFactory().createSocket(host, port,
                 clientHost, clientPort);
     }
 
+    @Override
     public Socket createSocket(String host, int port) throws IOException,
             UnknownHostException {
         return getSSLContext().getSocketFactory().createSocket(host, port);
@@ -135,8 +130,8 @@ public class SocketFactoryDinamico implements ProtocolSocketFactory {
 
     class HSKeyManager implements X509KeyManager {
 
-        private X509Certificate certificate;
-        private PrivateKey privateKey;
+        private final X509Certificate certificate;
+        private final PrivateKey privateKey;
 
         public HSKeyManager(X509Certificate certificate, PrivateKey privateKey) {
             this.certificate = certificate;
