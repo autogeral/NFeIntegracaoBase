@@ -57,8 +57,6 @@ import java.security.cert.X509Certificate;
 import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.apache.axis2.client.Options;
-import org.apache.axis2.transport.http.HttpTransportProperties;
 import org.apache.commons.httpclient.protocol.Protocol;
 
 /**
@@ -68,11 +66,6 @@ import org.apache.commons.httpclient.protocol.Protocol;
 public class WsConnectionConfig {
 
     public static void setProperties(String cnpj) {
-        boolean useProxy = Boolean.parseBoolean(System.getProperty("useProxy", "false"));
-        if (useProxy) {
-            configuraProxy();
-        }
-
         System.setProperty("java.protocol.handler.pkgs", "com.sun.net.ssl.internal.www.protocol");
         if(NFeUtil.getCertificadoTipo(cnpj)!=null && !"A1".equals(NFeUtil.getCertificadoTipo(cnpj))) {
             configuraA3(cnpj);
@@ -207,25 +200,6 @@ public class WsConnectionConfig {
                 provider.list(System.out);
             }
         }
-    }
-    
-
-    private static void configuraProxy() {
-        Options options = new Options();
-        HttpTransportProperties.Authenticator auth = new HttpTransportProperties.Authenticator();
-        String aux = System.getProperty("http.proxyUser");
-        auth.setUsername(aux);
-        aux = System.getProperty("http.proxyPassword");
-        auth.setPassword(aux);
-        // set if realm or domain is known
-        options.setProperty(org.apache.axis2.transport.http.HTTPConstants.AUTHENTICATE, auth);
-        HttpTransportProperties.ProxyProperties proxyProperties = new HttpTransportProperties.ProxyProperties();
-        aux = System.getProperty("http.proxyHost");
-        proxyProperties.setProxyName(aux);
-        int porta = Integer.parseInt(System.getProperty("http.proxyPort", "3128"));
-        proxyProperties.setProxyPort(porta);
-        options.setProperty(org.apache.axis2.transport.http.HTTPConstants.PROXY, proxyProperties);
-        options.setProperty(org.apache.axis2.context.MessageContextConstants.HTTP_PROTOCOL_VERSION, org.apache.axis2.transport.http.HTTPConstants.HEADER_PROTOCOL_11);
     }
 
     private static void configuraA1(String cnpj) {

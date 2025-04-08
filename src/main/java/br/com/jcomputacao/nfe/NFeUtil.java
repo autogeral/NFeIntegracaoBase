@@ -17,7 +17,7 @@
  * If it is your itention to get support for a commercial version of this
  * application get in touch with J. Computacao LTDA at http://www.jcomputacao.com.br
  *
- * Este programa � software livre: voce pode redistribui-lo e/ou modifica-lo
+ * Este programa é software livre: voce pode redistribui-lo e/ou modifica-lo
  * sob os termos da Licenca Pulica Generica (GNU GPL) como publicado pela
  * Free Software Foundation, na versao 3 da licenca ou alguma versao superior.
  *
